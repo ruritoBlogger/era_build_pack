@@ -1,0 +1,8 @@
+# インストールコマンドで引っ張ってくるディレクトリ
+FTG4.50/
+
+# インストールコマンドで作成されるシンボリックリンク
+packager/lib/FightingICE.jar
+FTGrunner/FTG4.50/
+packager/src/main/java/*
+!packager/src/main/java/.gitkeep

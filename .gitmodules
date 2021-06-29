@@ -1,0 +1,9 @@
+[submodule "FTGrunner"]
+	path = FTGrunner
+	url = https://github.com/ruritoBlogger/FTGrunner.git
+	ignore = dirty # シンボリックリンクを貼ったときに変更差分を出さない
+
+[submodule "GameAI-FightingAI"]
+	path = GameAI-FightingAI
+	url = https://github.com/DRL-CASIA/GameAI-FightingAI.git
+	ignore = dirty # シンボリックリンクを貼ったときに変更差分を出さない
