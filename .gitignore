@@ -1,8 +1,12 @@
 # インストールコマンドで引っ張ってくるディレクトリ
 FTG4.50/
+ERHEA_PI_DJL.zip
+ERHEA_PI_DJL/
 
 # インストールコマンドで作成されるシンボリックリンク
 packager/lib/FightingICE.jar
 FTGrunner/FTG4.50/
 packager/src/main/java/*
 !packager/src/main/java/.gitkeep
+packager_2021/src/main/java/*
+!packager_2021/src/main/java/.gitkeep
