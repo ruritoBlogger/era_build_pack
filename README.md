@@ -21,6 +21,9 @@
 ### ERHEAビルドスクリプト実行（ERHEAのコードを改変したときに実行します）
 `sh build_era.sh`
 
+### ERHEA DJLビルドスクリプト実行（ERHEA DJLのコードを改変したときに実行します）
+`sh build_era_djl.sh`
+
 ## やってること
 1. Gitサブモジュールの取得（GameAI-FightingAI, FTGrunner）\[init.sh\]
 1. FTG4.50のダウンロード\[init.sh\]

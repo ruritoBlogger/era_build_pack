@@ -21,6 +21,34 @@ else
     echo "[配置終了] FTG4.50"
 fi
 
+# FTG4.50/libに依存関係用のディレクトリを作成
+if [ -d FTG4.50/lib/ERHEA_PI ]; then
+    echo "[依存関係用ディレクトリ作成済] FTG4.50/lib/ERHEA_PI"
+else
+    echo "[依存関係用ディレクトリ作成開始] FTG4.50/lib/ERHEA_PI"
+    mkdir FTG4.50/lib/ERHEA_PI
+    echo "[依存関係用ディレクトリ作成終了] FTG4.50/lib/ERHEA_PI"
+fi
+
+if [ -d FTG4.50/lib/ERHEA_PI_DJL ]; then
+    echo "[依存関係用ディレクトリ作成済] FTG4.50/lib/ERHEA_PI_DJL"
+else
+    echo "[依存関係用ディレクトリ作成開始] FTG4.50/lib/ERHEA_PI_DJL"
+    mkdir FTG4.50/lib/ERHEA_PI_DJL
+    echo "[依存関係用ディレクトリ作成終了] FTG4.50/lib/ERHEA_PI_DJL"
+fi
+
+# ERHEA DLJのzipがあれば展開
+if [ -f ./ERHEA_PI_DJL.zip ] && ! [ -d ./ERHEA_PI_DJL ]; then
+    echo "[配置開始] ERHEA_PI_DJL"
+    unzip ERHEA_PI_DJL.zip
+    echo "[配置終了] ERHEA_PI_DJL"
+elif [ -d ./ERHEA_PI_DJL ]; then
+    echo "[展開済] ERHEA_PI_DJL"
+else
+    echo "[展開スキップ] ERHEA_PI_DJL（ファイルが見つかりませんでした）"
+fi
+
 # どうにかしたいがどうにもならなかった
 sed --version &> /dev/null
 if [ $? -eq 0 ]; then
@@ -54,6 +82,43 @@ else
     echo "[シンボリックリンク作成終了] packager/src/main/java"
 fi
 
+# for ERHEA_PI_DJL
+if [ -L $(pwd)/packager_2021/lib/FightingICE.jar ]; then
+    echo "[シンボリックリンク作成済] packager_2021/lib/FightingICE.jar"
+else
+    echo "[シンボリックリンク作成開始] packager_2021/lib/FightingICE.jar"
+    ln -s $(pwd)/FTG4.50/FightingICE.jar $(pwd)/packager_2021/lib
+    echo "[シンボリックリンク作成終了] packager_2021/lib/FightingICE.jar"
+fi
+
+if [ -L $(pwd)/FTG4.50/data/aiData/ERHEA_PI_DJL ]; then
+    echo "[シンボリックリンク作成済] FTG4.50/data/aiData/ERHEA_PI_DJL"
+elif [ -d ./ERHEA_PI_DJL ]; then
+    echo "[シンボリックリンク作成開始] FTG4.50/data/aiData/ERHEA_PI_DJL"
+    ln -s $(pwd)/ERHEA_PI_DJL/aiData/ERHEA_PI_DJL $(pwd)/FTG4.50/data/aiData/ERHEA_PI_DJL
+    echo "[シンボリックリンク作成終了] FTG4.50/data/aiData/ERHEA_PI_DJL"
+else
+    echo "[シンボリックリンク作成スキップ] ERHEA_PI_DJL（ファイルが見つかりませんでした）"
+fi
+
+if [ -f $(pwd)/packager_2021/src/main/java/ERHEA_PI_DJL.java ]; then
+    echo "[シンボリックリンク作成済] packager_2021/src/main/java"
+elif [ -d ./ERHEA_PI_DJL ]; then
+    echo "[シンボリックリンク作成開始] packager_2021/src/main/java"
+    lndir $(pwd)/ERHEA_PI_DJL/Code/erhea_mvn/src/main/java $(pwd)/packager_2021/src/main/java
+    echo "[シンボリックリンク作成終了] packager_2021/src/main/java"
+else
+    echo "[シンボリックリンク作成スキップ] ERHEA_PI_DJL（ファイルが見つかりませんでした）"
+fi
+
+# どうにかしたいがどうにもならなかった
+sed --version &> /dev/null
+if [ $? -eq 0 ]; then
+    bash ./replace_era_djl_files.sh
+else
+    sh ./replace_era_djl_files.sh
+fi
+
 # ERHEAのビルド
 sh ./build_era.sh
 
@@ -65,3 +130,7 @@ else
     ln -s $(pwd)/packager/build/libs/ERHEA_PI.jar $(pwd)/FTG4.50/data/ai
     echo "[シンボリックリンク作成終了] FTG4.50/data/ai/ERHEA_PI.jar"
 fi
+
+echo "🎉初期化が完了しました🎉"
+echo "ERHEA_PIをビルドするには sh ./build_era.sh を実行します"
+echo "ERHEA_PI_DJLをビルドするには sh ./build_era_djl.sh を実行します"
