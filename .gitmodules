@@ -7,3 +7,6 @@
 	path = GameAI-FightingAI
 	url = https://github.com/DRL-CASIA/GameAI-FightingAI.git
 	ignore = dirty # シンボリックリンクを貼ったときに変更差分を出さない
+[submodule "ERHEA_2021"]
+	path = ERHEA_2021
+	url = https://github.com/ruritoBlogger/ERHEA_2021
