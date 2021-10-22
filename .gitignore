@@ -3,6 +3,9 @@ FTG4.50/
 ERHEA_PI_DJL.zip
 ERHEA_PI_DJL/
 
+# 手動で引っ張ってくるディレクトリ
+updated_2021Competition/
+
 # インストールコマンドで作成されるシンボリックリンク
 packager/lib/FightingICE.jar
 FTGrunner/FTG4.50/
