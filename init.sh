@@ -38,6 +38,14 @@ else
     echo "[依存関係用ディレクトリ作成終了] FTG4.50/lib/ERHEA_PI_DJL"
 fi
 
+if [ -d FTG4.50/lib/ERHEA_PPO_PG ]; then
+    echo "[依存関係用ディレクトリ作成済] FTG4.50/lib/ERHEA_PPO_PG"
+else
+    echo "[依存関係用ディレクトリ作成開始] FTG4.50/lib/ERHEA_PPO_PG"
+    mkdir FTG4.50/lib/ERHEA_PPO_PG
+    echo "[依存関係用ディレクトリ作成終了] FTG4.50/lib/ERHEA_PPO_PG"
+fi
+
 # ERHEA DLJのzipがあれば展開
 if [ -f ./ERHEA_PI_DJL.zip ] && ! [ -d ./ERHEA_PI_DJL ]; then
     echo "[配置開始] ERHEA_PI_DJL"
@@ -119,6 +127,45 @@ else
     sh ./replace_era_djl_files.sh
 fi
 
+# for ERHEA_PPO_PG
+if [ -L $(pwd)/packager_PPO_PG/lib/FightingICE.jar ]; then
+    echo "[シンボリックリンク作成済] packager_PPO_PG/lib/FightingICE.jar"
+else
+    echo "[シンボリックリンク作成開始] packager_PPO_PG/lib/FightingICE.jar"
+    ln -s $(pwd)/FTG4.50/FightingICE.jar $(pwd)/packager_PPO_PG/lib
+    echo "[シンボリックリンク作成終了] packager_PPO_PG/lib/FightingICE.jar"
+fi
+
+if [ -L $(pwd)/FTG4.50/data/aiData/ERHEA_PPO_PG ]; then
+    echo "[シンボリックリンク作成済] FTG4.50/data/aiData/ERHEA_PPO_PG"
+elif [ -d ./ ]; then
+    echo "[シンボリックリンク作成開始] FTG4.50/data/aiData/ERHEA_PPO_PG"
+    ln -s $(pwd)/updated_2021Competition/AIs/2021_ERHEA_PPO_PG/aiData $(pwd)/FTG4.50/data/aiData/ERHEA_PPO_PG
+    echo "[シンボリックリンク作成終了] FTG4.50/data/aiData/ERHEA_PPO_PG"
+else
+    echo "[シンボリックリンク作成スキップ] ERHEA_PPO_PG（ファイルが見つかりませんでした）"
+fi
+
+if [ -f $(pwd)/packager_PPO_PG/src/main/java/ERHEA_PPO_PG.java ]; then
+    echo "[シンボリックリンク作成済] packager_PPO_PG/src/main/java"
+elif [ -d ./ERHEA_2021 ]; then
+    echo "[シンボリックリンク作成開始] packager_PPO_PG/src/main/java"
+    lndir $(pwd)/ERHEA_2021 $(pwd)/packager_PPO_PG/src/main/java
+    echo "[シンボリックリンク作成終了] packager_PPO_PG/src/main/java"
+else
+    echo "[シンボリックリンク作成スキップ] ERHEA_PPO_PG（ファイルが見つかりませんでした）"
+fi
+
+# どうにかしたいがどうにもならなかった
+sed --version &> /dev/null
+if [ $? -eq 0 ]; then
+    bash ./replace_era_2021_files.sh
+else
+    sh ./replace_era_2021_files.sh
+fi
+
+
+
 # ERHEAのビルド
 sh ./build_era.sh
 
@@ -134,3 +181,4 @@ fi
 echo "🎉初期化が完了しました🎉"
 echo "ERHEA_PIをビルドするには sh ./build_era.sh を実行します"
 echo "ERHEA_PI_DJLをビルドするには sh ./build_era_djl.sh を実行します"
+echo "ERHEA_PPO_PGをビルドするには sh ./build_era_2021.sh を実行します"
